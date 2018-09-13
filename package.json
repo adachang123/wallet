@@ -4,7 +4,8 @@
   "description": "test app",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot"
+    "start": "node server.js",
+    "test": "webpack-dev-server --hot"
   },
   "author": "Ada",
   "license": "ISC",
