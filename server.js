@@ -8,5 +8,9 @@ app.listen(3000, () => {
 });
 
 app.get('/', function (req, res) {
-   res.sendFile( __dirname + "/" + "index.js" );
+   res.sendFile(path.join(__dirname, 'index.html'));
+})
+
+app.get('/index.js', function (req, res) {
+   res.sendFile(path.join(__dirname, 'build', 'index.js'));
 })
