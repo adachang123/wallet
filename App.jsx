@@ -1,12 +1,29 @@
 import React from 'react';
 import styles from './index.less';
 
+/* preset 2015 don't support generator QAQ
+let idGenerator = (function*() {
+    let i = 0;
+    while (true) {
+        yield i++;
+    }
+})();
+*/
+
+let idGenerator = (() => {
+    let i = 0;
+    return {
+        next: () => {
+            return ++i;
+        }
+    }
+})();
+
 class App extends React.Component {
     constructor() {
         super();
-        this.idx_count = 0;
         this.state = {
-            wallets:[],
+            wallets: [],
             balance: 0
         };
     }
@@ -16,8 +33,9 @@ class App extends React.Component {
         <div>
             <Header balance={this.state.balance}></Header>
             <ActionBar addWallet={this.addWallet.bind(this)}></ActionBar>
-            <WalletContainer wallets={this.state.wallets}
-                delete={this.deleteWallet.bind(this)}
+            <WalletContainer
+                wallets={this.state.wallets}
+                deleteWallet={this.deleteWallet.bind(this)}
                 addMoney={this.addMoney.bind(this)}
             ></WalletContainer>
         </div>
@@ -25,49 +43,46 @@ class App extends React.Component {
    }
 
    addWallet() {
-        let new_wallet = {
-            id: this.idx_count++,
+        this.state.wallets.push({
+            id: idGenerator.next(),
             address: new Date().valueOf(),
             balance: 0
-        };
-        this.state.wallets.push(new_wallet);
+        });
         this.setState(this.state);
     }
 
     getIdxByWalletId(id) {
-        for (var idx in this.state.wallets) {
-            if (this.state.wallets[idx].id == id) {
-                return idx;
-            }
-        }
-        return -1;
+        return this.state.wallets.findIndex(wallet => wallet.id === id)
     }
 
     deleteWallet(id) {
         let idx = this.getIdxByWalletId(id);
 
-        if (idx != -1) {
-            this.state.wallets.splice(idx,1);
-            this.updateBalance();
-            this.setState(this.state);
-        } 
+        // early return
+        if (idx === -1) {
+            return;
+        }
+        this.state.wallets.splice(idx, 1);
+        this.state.balance = this.sumBalance();
+        this.setState(this.state);
     }
 
-    updateBalance() {
-        let balance = 0;
-        for (let i in this.state.wallets) {
-            balance += this.state.wallets[i].balance;
-        }
-        this.state.balance = balance;
+    sumBalance() {
+        return this.state.wallets.reduce(
+            (sum, wallet) => sum + wallet.balance,
+            0);
     }
+
     addMoney(id) {
         let idx = this.getIdxByWalletId(id);
 
-        if (idx != -1) {
-            this.state.wallets[idx].balance += 10;
-            this.updateBalance();
-            this.setState(this.state);
+        // early return
+        if (idx === -1) {
+            return;
         }
+        this.state.wallets[idx].balance += 10;
+        this.state.balance += 10;
+        this.setState(this.state);
     }
 }
 
@@ -85,14 +100,14 @@ class Header extends React.Component {
 }
 
 class ActionBar extends React.Component {
-    tmpFun() {
+    tmpFunc() {
         alert('Miao');
     }
     render() {
         return (
             <div className={ styles['action-bar'] }>
                 <button onClick={this.props.addWallet}>Create Wallet</button>
-                <button onClick={this.tmpFun}>Import Wallet</button>
+                <button onClick={this.tmpFunc}>Import Wallet</button>
             </div>
         )
     };
@@ -103,8 +118,9 @@ class WalletContainer extends React.Component {
         return (
             <div className="wallet-container">
                 {this.props.wallets.map(wallet => 
-                    <Wallet key={wallet.id} 
-                        delete={this.props.delete}
+                    <Wallet
+                        key={wallet.id}
+                        deleteWallet={this.props.deleteWallet}
                         addMoney={this.props.addMoney} {...wallet}>
                     </Wallet>
                 )}
@@ -123,11 +139,15 @@ class Wallet extends React.Component {
                     balance: {this.props.balance} MIAO
                 </div>
                 <div className="btns">
-                    <button className="delete-btn"
-                        onClick={() => this.props.delete(this.props.id)}>Delete
+                    <button
+                        className="delete-btn"
+                        onClick={() => this.props.deleteWallet(this.props.id)}>
+                    Delete
                     </button>
-                    <button className="add-money-btn"
-                        onClick={() => this.props.addMoney(this.props.id)}>Add some money
+                    <button
+                        className="add-money-btn"
+                        onClick={() => this.props.addMoney(this.props.id)}>
+                    Add some money
                     </button>
                 </div>           
             </div>
