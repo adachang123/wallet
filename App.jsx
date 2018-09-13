@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './index.less';
 
 class App extends React.Component {
     constructor() {
@@ -75,7 +76,7 @@ export default App;
 class Header extends React.Component {
     render() {
         return (
-            <div className="page-header">
+            <div className={ styles['page-header'] }>
                 <h2>Miao Wallet</h2>
                 <div className="balance">Balance: {this.props.balance} MIAO</div>
             </div>
@@ -89,7 +90,7 @@ class ActionBar extends React.Component {
     }
     render() {
         return (
-            <div className="action-bar">
+            <div className={ styles['action-bar'] }>
                 <button onClick={this.props.addWallet}>Create Wallet</button>
                 <button onClick={this.tmpFun}>Import Wallet</button>
             </div>
@@ -115,7 +116,7 @@ class WalletContainer extends React.Component {
 class Wallet extends React.Component {
     render() {
         return (
-            <div className="wallet">
+            <div className={ styles.wallet }>
                 <div className="info">
                     id: {this.props.id} <br />
                     address: {this.props.address} <br/>
