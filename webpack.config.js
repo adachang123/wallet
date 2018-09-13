@@ -1,8 +1,10 @@
+const path = require('path');
+
 var config = {
    entry: './main.js',
    mode: 'development',
    output: {
-      path:'/',
+      path: path.join(__dirname, 'build'),
       filename: 'index.js',
    },
    devServer: {
