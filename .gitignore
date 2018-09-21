@@ -3,12 +3,15 @@
 # dependencies
 pure-react/node_modules
 pure-react/package-lock.json
+redux-version/node_modules
+redux-version/package-lock.json
 
 # testing
 /coverage
 
 # production
-/build
+pure-react/build
+redux-version/build
 
 # misc
 .DS_Store
