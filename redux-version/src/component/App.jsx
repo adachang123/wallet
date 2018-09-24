@@ -21,15 +21,10 @@ class App extends React.Component {
 }
 function select(state) {
     return {
-        wallets: state.wallets,
-        balance: state.balance
+        wallets: state.walletApp.wallets,
+        balance: state.walletApp.balance
     };
  }
-
- App.defaultProps = {
-    wallets: [],
-    balance: 0
-};
 
 export default connect(select)(App);
 

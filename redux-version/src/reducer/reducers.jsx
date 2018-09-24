@@ -14,13 +14,12 @@ function walletApp(state={wallets:[], balance: 0}, action) {
     let idx;
     switch (action.type) {
         case 'ADD_WALLET':
-            console.log(state);
-            state.wallets.push({
+            state.wallets = state.wallets.concat({
                 id: action.id,
                 address: action.address,
                 balance: action.balance
             });
-            return state;
+            return Object.assign({}, state)
         case 'DELETE_WALLET':
             idx = getIdxByWalletId(action.id);
 
