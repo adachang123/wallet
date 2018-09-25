@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-function getWalletIdx(state, id) {
+function getIdxByWalletId(state, id) {
     return state.wallets.findIndex(wallet => wallet.id === id);
 }
 
@@ -21,20 +21,22 @@ function walletApp(state={wallets:[], balance: 0}, action) {
             });
             return Object.assign({}, state)
         case 'DELETE_WALLET':
-            idx = getIdxByWalletId(action.id);
+            idx = getIdxByWalletId(state, action.id);
 
             if (idx !== -1) {
                 state.wallets.splice(idx, 1);
-                state.balance = sumBalance();
+                state.wallets = state.wallets.slice();
+                state.balance = sumBalance(state);
             }     
-            return state;
+            return Object.assign({}, state);
         case 'ADD_MONEY':
-            idx = getIdxByWalletId(action.id);
+            idx = getIdxByWalletId(state, action.id);
             if (idx !== -1) {
                 state.wallets[idx].balance += 10;
-                state.balance = sumBalance();
+                state.wallets = state.wallets.slice();
+                state.balance = sumBalance(state);
             }
-            return state;
+            return Object.assign({}, state);
         default:
             return state;
     }
