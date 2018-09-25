@@ -55,11 +55,9 @@ class ActionBar extends React.Component {
 
 class WalletContainer extends React.Component {
     render() {
-        const {wallets, deleteWallet, addMoney} = this.props;
-
         return (
             <div className="wallet-container">
-                {wallets.map(wallet => 
+                {[...wallets.values()].map(wallet =>
                     <Wallet
                         key={wallet.id}
                         deleteWallet={deleteWallet}

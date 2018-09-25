@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import { combineReducers } from 'redux';
 
 function getIdxByWalletId(state, id) {
@@ -10,24 +11,22 @@ function sumBalance(state) {
         0);
 }
 
-function walletApp(state={wallets:[], balance: 0}, action) {
+function walletApp(state={wallets: Immutable.Map(), balance: 0}, action) {
     let idx;
     switch (action.type) {
         case 'ADD_WALLET':
-            state.wallets = state.wallets.concat({
+            state.wallets = state.wallets.set(action.id, fromJS({
                 id: action.id,
                 address: action.address,
                 balance: action.balance
-            });
+            }));
             return Object.assign({}, state)
         case 'DELETE_WALLET':
-            idx = getIdxByWalletId(state, action.id);
-
-            if (idx !== -1) {
-                state.wallets.splice(idx, 1);
-                state.wallets = state.wallets.slice();
+            if (state.wallets.get(action.id)) {
+                state.wallets = state.wallets.delete(action.id);
                 state.balance = sumBalance(state);
-            }     
+            }
+
             return Object.assign({}, state);
         case 'ADD_MONEY':
             idx = getIdxByWalletId(state, action.id);
