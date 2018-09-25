@@ -7,6 +7,9 @@ var config = {
       path: path.join(__dirname, 'build'),
       filename: 'index.js',
    },
+   resolve: {
+      extensions: ['.js', '.jsx']
+   },
    devServer: {
       inline: true,
       port: 8080

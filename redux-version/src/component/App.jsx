@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addWallet, deleteWallet, addMoney } from '../action/Actions.js';
+import { addWallet, deleteWallet, addMoney } from '../action/Actions';
 import styles from '../index.less';
 
 class App extends React.Component {
@@ -55,13 +55,14 @@ class ActionBar extends React.Component {
 
 class WalletContainer extends React.Component {
     render() {
+        const {wallets} = this.props;
         return (
             <div className="wallet-container">
                 {[...wallets.values()].map(wallet =>
                     <Wallet
-                        key={wallet.id}
+                        key={wallet.get('id')}
                         deleteWallet={deleteWallet}
-                        addMoney={addMoney} {...wallet}>
+                        addMoney={addMoney} {...wallet.toJS()}>
                     </Wallet>
                 )}
             </div>
