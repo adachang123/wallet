@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addWallet } from '../action/Actions';
+import { addWallet } from '../action/actions';
 import styles from '../index.less';
 
 class ActionBar extends React.Component {

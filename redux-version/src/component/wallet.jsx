@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteWallet, addMoney } from '../action/Actions';
+import { deleteWallet, addMoney } from '../action/actions';
 import styles from '../index.less';
 
 class Wallet extends React.Component {

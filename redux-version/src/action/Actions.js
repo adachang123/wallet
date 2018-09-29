@@ -1,4 +1,4 @@
-import {ADD_WALLET, DELETE_WALLET, ADD_MONEY} from './ActionType'
+import {ADD_WALLET, DELETE_WALLET, ADD_MONEY} from './actionType'
 
 let idGenerator = (() => {
     let i = 0;
