@@ -60,7 +60,7 @@ class WalletContainer extends React.Component {
                 {[...wallets.values()].map(wallet =>
                     <Wallet
                         key={wallet.get('id')}
-                        {...wallet.toJS()}>
+                        id={wallet.get('id')}>
                     </Wallet>
                 )}
             </div>

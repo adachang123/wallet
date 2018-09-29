@@ -30,4 +30,13 @@ class Wallet extends React.Component {
     };
 }
 
-export default connect()(Wallet);
+const selectWallet = (state, props) => {
+    const wallet = state.walletApp.wallets.get(props.id);
+    return {
+        id: wallet.get('id'),
+        address: wallet.get('address'),
+        balance: wallet.get('balance')
+    }
+}
+
+export default connect(selectWallet)(Wallet);
