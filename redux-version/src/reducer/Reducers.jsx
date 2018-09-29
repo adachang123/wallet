@@ -10,10 +10,13 @@ export const DefaultState = Immutable.fromJS({
     balance: 0
   });
 
-function sumBalance(wallets) {
-    return wallets.reduce(
+function updateBalance(state) {
+    const wallets = state.get('wallets');
+    const balance = wallets.reduce(
         (sum, wallet) => sum + wallet.get('balance'),
         0);
+
+    return state.set('balance', balance);
 }
 
 export const walletApp = handleActions({
@@ -30,10 +33,8 @@ export const walletApp = handleActions({
         let target = state.get('wallets').get(payload.id);
         if (target) {
             const wallets = state.get('wallets').delete(payload.id);
-            const balance = sumBalance(wallets);
-
             state = state.set('wallets', wallets);
-            state = state.set('balance', balance);
+            state = updateBalance(state);
         }
 
         return state;
@@ -43,10 +44,8 @@ export const walletApp = handleActions({
         if (target) {
             target = target.update('balance', (v)=>v+10);
             const wallets = state.get('wallets').set(payload.id, target);
-            const balance = sumBalance(wallets);
-
             state = state.set('wallets', wallets);
-            state = state.set('balance', balance);
+            state = updateBalance(state);
         }
 
         return state;

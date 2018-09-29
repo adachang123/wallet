@@ -11,15 +11,15 @@ let idGenerator = (() => {
 })();
 
 export const { addWallet, deleteWallet, addMoney } = createActions({
-    ADD_WALLET: () => ({
+    [ADD_WALLET]: () => ({
         id: idGenerator.next(),
         address: new Date().valueOf(),
         balance: 0
     }),
-    DELETE_WALLET: (id) => ({
+    [DELETE_WALLET]: (id) => ({
         id
     }),
-    ADD_MONEY: (id) => ({
+    [ADD_MONEY]: (id) => ({
         id
     })
 });
