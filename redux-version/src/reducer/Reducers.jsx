@@ -1,49 +1,57 @@
 import Immutable from 'immutable';
 import { combineReducers } from 'redux';
 import {ADD_WALLET, DELETE_WALLET, ADD_MONEY} from '../action/ActionType'
+import { handleActions } from 'redux-actions';
 
 const { fromJS } = Immutable;
 
-function getIdxByWalletId(state, id) {
-    return state.wallets.findIndex(wallet => wallet.id === id);
-}
+export const DefaultState = Immutable.fromJS({
+    wallets: Immutable.Map(),
+    balance: 0
+  });
 
-function sumBalance(state) {
-    return state.wallets.reduce(
+function sumBalance(wallets) {
+    return wallets.reduce(
         (sum, wallet) => sum + wallet.get('balance'),
         0);
 }
 
-function walletApp(state={wallets: Immutable.Map(), balance: 0}, action) {
-    let idx;
-    switch (action.type) {
-        case ADD_WALLET:
-            state.wallets = state.wallets.set(action.id, fromJS({
-                id: action.id,
-                address: action.address,
-                balance: action.balance
-            }));
-            return Object.assign({}, state)
-        case DELETE_WALLET:
-            if (state.wallets.get(action.id)) {
-                state.wallets = state.wallets.delete(action.id);
-                state.balance = sumBalance(state);
-            }
+export const walletApp = handleActions({
+    [ADD_WALLET]: (state, {payload}) => {
+        const wallets = state.get('wallets').set(payload.id, fromJS({
+            id: payload.id,
+            address: payload.address,
+            balance: payload.balance
+        }));
+        state = state.mergeDeep({wallets: wallets});
+        return state;
+    },
+    [DELETE_WALLET]: (state, {payload}) => {
+        let target = state.get('wallets').get(payload.id);
+        if (target) {
+            const wallets = state.get('wallets').delete(payload.id);
+            const balance = sumBalance(wallets);
 
-            return Object.assign({}, state);
-        case ADD_MONEY:
-            let target = state.wallets.get(action.id);
-            if (target) {
-                target = target.update('balance', (v)=>v+10);
-                state.wallets = state.wallets.set(action.id, target);
-                state.balance = sumBalance(state);
-            }
+            state = state.set('wallets', wallets);
+            state = state.set('balance', balance);
+        }
 
-            return Object.assign({}, state);
-        default:
-            return state;
+        return state;
+    },
+    [ADD_MONEY]: (state, {payload}) => {
+        let target = state.get('wallets').get(payload.id);
+        if (target) {
+            target = target.update('balance', (v)=>v+10);
+            const wallets = state.get('wallets').set(payload.id, target);
+            const balance = sumBalance(wallets);
+
+            state = state.set('wallets', wallets);
+            state = state.set('balance', balance);
+        }
+
+        return state;
     }
-}
+}, DefaultState);
 
 const rootReducer = combineReducers({
     walletApp

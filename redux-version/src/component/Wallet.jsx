@@ -31,7 +31,7 @@ class Wallet extends React.Component {
 }
 
 const selectWallet = (state, props) => {
-    const wallet = state.walletApp.wallets.get(props.id);
+    const wallet = state.walletApp.get('wallets').get(props.id);
     return {
         id: wallet.get('id'),
         address: wallet.get('address'),
