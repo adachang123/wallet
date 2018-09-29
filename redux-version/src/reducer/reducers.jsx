@@ -10,7 +10,7 @@ function getIdxByWalletId(state, id) {
 
 function sumBalance(state) {
     return state.wallets.reduce(
-        (sum, wallet) => sum + wallet.balance,
+        (sum, wallet) => sum + wallet.get('balance'),
         0);
 }
 
@@ -32,12 +32,13 @@ function walletApp(state={wallets: Immutable.Map(), balance: 0}, action) {
 
             return Object.assign({}, state);
         case ADD_MONEY:
-            idx = getIdxByWalletId(state, action.id);
-            if (idx !== -1) {
-                state.wallets[idx].balance += 10;
-                state.wallets = state.wallets.slice();
+            let target = state.wallets.get(action.id);
+            if (target) {
+                target = target.update('balance', (v)=>v+10);
+                state.wallets = state.wallets.set(action.id, target);
                 state.balance = sumBalance(state);
             }
+
             return Object.assign({}, state);
         default:
             return state;

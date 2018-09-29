@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addWallet, deleteWallet, addMoney } from '../action/Actions';
+import { addWallet } from '../action/Actions';
+import Wallet from './wallet';
 import styles from '../index.less';
 
 class App extends React.Component {
@@ -12,8 +13,6 @@ class App extends React.Component {
                 <ActionBar addWallet={()=>dispatch(addWallet())}></ActionBar>
                 <WalletContainer
                     wallets={wallets}
-                    deleteWallet={(id)=>dispatch(deleteWallet(id))}
-                    addMoney={(id)=>dispatch(addMoney(id))}
                 ></WalletContainer>
             </div>
         );
@@ -61,38 +60,10 @@ class WalletContainer extends React.Component {
                 {[...wallets.values()].map(wallet =>
                     <Wallet
                         key={wallet.get('id')}
-                        deleteWallet={deleteWallet}
-                        addMoney={addMoney} {...wallet.toJS()}>
+                        {...wallet.toJS()}>
                     </Wallet>
                 )}
             </div>
         )
     }
-}
-
-class Wallet extends React.Component {
-    render() {
-        const {id, address, balance, deleteWallet, addMoney} = this.props;
-        return (
-            <div className={ styles.wallet }>
-                <div className="info">
-                    id: {id} <br />
-                    address: {address} <br/>
-                    balance: {balance} MIAO
-                </div>
-                <div className="btns">
-                    <button
-                        className="delete-btn"
-                        onClick={() => deleteWallet(id)}>
-                    Delete
-                    </button>
-                    <button
-                        className="add-money-btn"
-                        onClick={() => addMoney(id)}>
-                    Add some money
-                    </button>
-                </div>           
-            </div>
-        )
-    };
 }
