@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteWallet, addMoney } from '../action/actions';
+import { deleteWallet, addMoney } from '../action/Actions';
 import styles from '../index.less';
 
 class Wallet extends React.Component {
@@ -24,7 +24,7 @@ class Wallet extends React.Component {
                         onClick={() => dispatch(addMoney(id))}>
                     Add some money
                     </button>
-                </div>           
+                </div>
             </div>
         )
     };

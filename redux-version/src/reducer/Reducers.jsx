@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import { combineReducers } from 'redux';
-import {ADD_WALLET, DELETE_WALLET, ADD_MONEY} from '../action/actionType'
+import {ADD_WALLET, DELETE_WALLET, ADD_MONEY} from '../action/ActionType'
 
 const { fromJS } = Immutable;
 

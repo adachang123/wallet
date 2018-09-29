@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ActionBar from './actionBar';
-import Wallet from './wallet';
+import ActionBar from './ActionBar';
+import Wallet from './Wallet';
 import styles from '../index.less';
 
 class App extends React.Component {
