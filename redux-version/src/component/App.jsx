@@ -21,8 +21,8 @@ class App extends React.Component {
 
 function select(state) {
     return {
-        wallets: state.walletApp.get('wallets'),
-        balance: state.walletApp.get('balance')
+        wallets: state.get('wallets'),
+        balance: state.get('balance')
     };
  }
 

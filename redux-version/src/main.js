@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './component/App';
-import rootReducer from './reducer/Reducers'
+import walletApp from './reducer/Reducers'
 
-const store = createStore(rootReducer);
+const store = createStore(walletApp);
 
 ReactDOM.render(
     <Provider store={store}>

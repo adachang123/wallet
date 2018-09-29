@@ -53,8 +53,4 @@ export const walletApp = handleActions({
     }
 }, DefaultState);
 
-const rootReducer = combineReducers({
-    walletApp
-});
-
-export default rootReducer;
+export default walletApp;
