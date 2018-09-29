@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addWallet } from '../action/Actions';
+import ActionBar from './actionBar';
 import Wallet from './wallet';
 import styles from '../index.less';
 
@@ -10,7 +10,7 @@ class App extends React.Component {
         return (
             <div>
                 <Header balance={balance}></Header>
-                <ActionBar addWallet={()=>dispatch(addWallet())}></ActionBar>
+                <ActionBar />
                 <WalletContainer
                     wallets={wallets}
                 ></WalletContainer>
@@ -18,6 +18,7 @@ class App extends React.Component {
         );
    }
 }
+
 function select(state) {
     return {
         wallets: state.walletApp.wallets,
@@ -36,20 +37,6 @@ class Header extends React.Component {
             </div>
         );
     }
-}
-
-class ActionBar extends React.Component {
-    tmpFunc() {
-        alert('Miao');
-    }
-    render() {
-        return (
-            <div className={ styles['action-bar'] }>
-                <button onClick={this.props.addWallet}>Create Wallet</button>
-                <button onClick={this.tmpFunc}>Import Wallet</button>
-            </div>
-        )
-    };
 }
 
 class WalletContainer extends React.Component {
