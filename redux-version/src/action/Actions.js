@@ -1,4 +1,9 @@
-import {ADD_WALLET, DELETE_WALLET, ADD_MONEY} from './ActionType'
+import {
+  ADD_WALLET,
+  DELETE_WALLET,
+  ADD_MONEY,
+  UPDATE_BALANCE,
+} from './ActionType'
 import { createActions } from 'redux-actions';
 
 let idGenerator = (() => {
@@ -10,7 +15,7 @@ let idGenerator = (() => {
     }
 })();
 
-export const { addWallet, deleteWallet, addMoney } = createActions({
+module.exports = createActions({
     [ADD_WALLET]: () => ({
         id: idGenerator.next(),
         address: new Date().valueOf(),
@@ -21,5 +26,6 @@ export const { addWallet, deleteWallet, addMoney } = createActions({
     }),
     [ADD_MONEY]: (id) => ({
         id
-    })
+    }),
+    [UPDATE_BALANCE]: () => ({})
 });

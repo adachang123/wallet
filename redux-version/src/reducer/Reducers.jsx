@@ -1,6 +1,12 @@
 import Immutable from 'immutable';
 import { combineReducers } from 'redux';
-import {ADD_WALLET, DELETE_WALLET, ADD_MONEY} from '../action/ActionType'
+import {
+  ADD_WALLET,
+  DELETE_WALLET,
+  ADD_MONEY,
+  UPDATE_BALANCE,
+} from '../action/ActionType'
+import { updateBalance } from '../action/Actions';
 import { handleActions } from 'redux-actions';
 
 const { fromJS } = Immutable;
@@ -9,15 +15,6 @@ export const DefaultState = Immutable.fromJS({
     wallets: Immutable.Map(),
     balance: 0
   });
-
-function updateBalance(state) {
-    const wallets = state.get('wallets');
-    const balance = wallets.reduce(
-        (sum, wallet) => sum + wallet.get('balance'),
-        0);
-
-    return state.set('balance', balance);
-}
 
 export const walletApp = handleActions({
     [ADD_WALLET]: (state, {payload}) => {
@@ -34,7 +31,7 @@ export const walletApp = handleActions({
         if (target) {
             const wallets = state.get('wallets').delete(payload.id);
             state = state.set('wallets', wallets);
-            state = updateBalance(state);
+            state = walletApp(state, updateBalance());
         }
 
         return state;
@@ -45,10 +42,18 @@ export const walletApp = handleActions({
             target = target.update('balance', (v)=>v+10);
             const wallets = state.get('wallets').set(payload.id, target);
             state = state.set('wallets', wallets);
-            state = updateBalance(state);
+            state = walletApp(state, updateBalance());
         }
 
         return state;
+    },
+    [UPDATE_BALANCE]: (state) => {
+        const wallets = state.get('wallets');
+        const balance = wallets.reduce(
+            (sum, wallet) => sum + wallet.get('balance'),
+            0);
+
+        return state.set('balance', balance);
     }
 }, DefaultState);
 
