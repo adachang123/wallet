@@ -15,7 +15,7 @@ let idGenerator = (() => {
     }
 })();
 
-module.exports = createActions({
+export default createActions({
     [ADD_WALLET]: () => ({
         id: idGenerator.next(),
         address: new Date().valueOf(),
